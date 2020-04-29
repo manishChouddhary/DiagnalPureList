@@ -8,7 +8,8 @@ import com.diagnal.purelisting.model.Content
 
 class PureListAdaptor: RecyclerView.Adapter<PureListAdaptor.ViewHolder>() {
 
-    lateinit var contentItems : List<Content>
+
+    var contentItems : List<Content> = ArrayList()
 
     lateinit var getImageResource : (String) -> Int
 
@@ -20,6 +21,12 @@ class PureListAdaptor: RecyclerView.Adapter<PureListAdaptor.ViewHolder>() {
     override fun getItemCount(): Int = contentItems.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(contentItems[position])
+
+    fun setList(contentList: List<Content>) {
+        val listSize = contentItems.size
+        (contentItems as ArrayList).addAll(contentList)
+        notifyItemRangeChanged(if (listSize<=0) 0 else listSize-1,contentItems.size)
+    }
 
     inner class ViewHolder(private val cItemView: PureListItemBinding) : RecyclerView.ViewHolder(cItemView.root) {
         fun bind(content: Content) {

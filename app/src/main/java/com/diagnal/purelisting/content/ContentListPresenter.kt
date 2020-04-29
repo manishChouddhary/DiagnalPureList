@@ -1,6 +1,7 @@
 package com.diagnal.purelisting.content
 
 import com.diagnal.purelisting.communication.CommunicationService
+import com.diagnal.purelisting.model.Content
 import com.diagnal.purelisting.model.ContentListing
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -11,7 +12,9 @@ class ContentListPresenter(private val communicationService: CommunicationServic
     private var view : ContentListContract.View? = null
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    private var current_page by Delegates.notNull<Int>()
+    var current_page = 0
+    var pageCount:Int = 3
+    lateinit var contentList: List<Content>
 
     override fun attachView(view: ContentListContract.View) {
         this.view = view
@@ -23,7 +26,8 @@ class ContentListPresenter(private val communicationService: CommunicationServic
     }
 
     override fun getContentPage(page: Int) {
-        current_page = page
+        if(current_page>pageCount)
+            return
         val disposable = communicationService.getPageData(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
