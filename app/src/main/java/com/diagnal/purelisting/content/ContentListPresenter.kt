@@ -39,6 +39,17 @@ class ContentListPresenter(private val communicationService: CommunicationServic
         compositeDisposable.add(disposable)
     }
 
+    override fun applyFilter(filterText: String?, contentItems: List<Content>) {
+            if(filterText?.length?:0 >=3) {
+                val filterList =
+                    contentItems.filter { it.name.contains(filterText ?: "", ignoreCase = true) }
+                view?.setFilterList(filterList)
+            }
+            if((filterText?.length) == 0){
+                view?.setListOnClear()
+            }
+    }
+
     private fun handleError() {
         //handle if error occurs
     }
@@ -47,5 +58,4 @@ class ContentListPresenter(private val communicationService: CommunicationServic
         view?.showTitle(contentListing.page.title)
         view?.showContentList(contentListing.page.contentItems.content)
     }
-
 }
