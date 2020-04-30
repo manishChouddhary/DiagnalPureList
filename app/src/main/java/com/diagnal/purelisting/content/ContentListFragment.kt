@@ -1,10 +1,10 @@
 package com.diagnal.purelisting.content
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,16 +19,17 @@ import com.diagnal.purelisting.model.Content
 import kotlinx.android.synthetic.main.fragment_content_list.*
 import javax.inject.Inject
 
-
 class ContentListFragment : Fragment(), ContentListContract.View {
 
     private lateinit var rvAdapter: PureListAdaptor
+
     @Inject
     lateinit var presenter: ContentListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppApplication.diComponent.inject(this)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -108,5 +109,34 @@ class ContentListFragment : Fragment(), ContentListContract.View {
                 setTitle(title)
             }
         }
+    }
+
+    override fun setFilterList(filterList: List<Content>) {
+        rvAdapter.setFilterList(filterList)
+    }
+
+    override fun setListOnClear() {
+        rvAdapter.setListOnClear()
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu?.clear()
+        requireActivity().menuInflater.inflate(R.menu.menu_content_list,menu)
+        val search = menu?.findItem(R.id.search)
+        val searchView: SearchView = search?.actionView as SearchView
+        val searchClose: ImageView = searchView.findViewById(androidx.appcompat.R.id.search_close_btn)
+        searchClose.setImageResource(R.drawable.search_cancel)
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(filterText: String?): Boolean {
+                presenter.applyFilter(filterText, rvAdapter.contentItems)
+                return false
+            }
+        })
     }
 }

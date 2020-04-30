@@ -13,5 +13,5 @@ data class Page(
 data class ContentItems(val content : List<Content>)
 data class Content(
     val name: String,
-    @SerializedName(value = "poster-image") val posterImage: String
+    @SerializedName(value = "poster-image") val posterImage: String = "placeholder_for_missing_posters.png"
 )

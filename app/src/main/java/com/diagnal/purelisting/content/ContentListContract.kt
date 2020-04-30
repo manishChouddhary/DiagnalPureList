@@ -8,10 +8,13 @@ interface ContentListContract {
         fun attachView(view: View)
         fun detachView()
         fun getContentPage(page: Int)
+        fun applyFilter(filterText: String?, contentItems: List<Content>)
     }
 
     interface View {
         fun showContentList(contentList: List<Content>)
         fun showTitle(title: String)
+        fun setFilterList(filterList: List<Content>)
+        fun setListOnClear()
     }
 }
