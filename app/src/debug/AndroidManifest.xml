@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.diagnal.purelisting">
+    <application>
+        <activity android:name="com.diagnal.purelisting.TestActivity"
+            android:theme="@style/TestTheme">
+        </activity>
+    </application>
+
+</manifest>
